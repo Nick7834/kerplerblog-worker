@@ -8,5 +8,10 @@ export const notificationQueue = new Queue("notification", {
     host: new URL(process.env.REDIS_URL!).hostname,
     port: Number(new URL(process.env.REDIS_URL!).port),
     password: new URL(process.env.REDIS_URL!).password,
+    tls: { rejectUnauthorized: false },
+  },
+  defaultJobOptions: {
+    removeOnComplete: true, 
+    removeOnFail: true, 
   },
 });
