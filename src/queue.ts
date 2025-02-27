@@ -1,17 +1,12 @@
-import { Queue } from 'bullmq'; 
-import Redis from 'ioredis';   
+import { Redis } from "ioredis";
+import { Queue } from "bullmq";
 
+export const redis = new Redis(process.env.REDIS_URL!);
 
-export const redis = new Redis({
-  host: 'humane-ibex-18467.upstash.io', 
-  port: 6379,                            
-  password: process.env.REDIS_PASSWORD, 
-  maxRetriesPerRequest: null, 
-  tls: { servername: 'humane-ibex-18467.upstash.io' },  
+export const notificationQueue = new Queue("notification", {
+  connection: {
+    host: new URL(process.env.REDIS_URL!).hostname,
+    port: Number(new URL(process.env.REDIS_URL!).port),
+    password: new URL(process.env.REDIS_URL!).password,
+  },
 });
-
-
-export const notificationQueue = new Queue('notification', {
-    connection: redis,
-  });
-  
